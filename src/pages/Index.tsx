@@ -1,8 +1,9 @@
-
 import { useState, useMemo } from 'react';
 import { FileUpload } from '@/components/FileUpload';
 import StatCard from '@/components/StatCard';
 import TopTracksChart from '@/components/TopTracksChart';
+import ListeningTrendsChart from '@/components/ListeningTrendsChart';
+import SessionAnalysisChart from '@/components/SessionAnalysisChart';
 import { Clock, Music2, Calendar, Users } from 'lucide-react';
 
 interface StreamingData {
@@ -52,12 +53,40 @@ const Index = () => {
       .slice(0, 10)
       .map(([name, plays]) => ({ name, plays }));
 
+    // Calculate daily listening time
+    const dailyListening = streamingData.reduce((acc, curr) => {
+      const date = curr.ts.split(' ')[0];
+      if (!acc[date]) {
+        acc[date] = 0;
+      }
+      acc[date] += curr.ms_played / (1000 * 60); // Convert to minutes
+      return acc;
+    }, {} as Record<string, number>);
+
+    const dailyTrends = Object.entries(dailyListening)
+      .map(([date, minutes]) => ({
+        date,
+        minutes,
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    // Calculate hourly patterns
+    const sessions = streamingData.map(item => {
+      const date = new Date(item.ts);
+      return {
+        hour: date.getHours(),
+        duration: item.ms_played / (1000 * 60), // Convert to minutes
+      };
+    });
+
     return {
       totalHours,
       uniqueTracks,
       uniqueArtists,
       uniqueDays,
-      topTracks
+      topTracks,
+      dailyTrends,
+      sessions
     };
   }, [streamingData]);
 
@@ -97,6 +126,11 @@ const Index = () => {
                 value={stats?.uniqueDays || 0}
                 icon={<Calendar className="h-6 w-6" />}
               />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ListeningTrendsChart data={stats?.dailyTrends || []} />
+              <SessionAnalysisChart data={stats?.sessions || []} />
             </div>
             
             <div className="grid grid-cols-1 gap-6">
