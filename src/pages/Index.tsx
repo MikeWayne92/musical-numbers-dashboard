@@ -66,10 +66,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neo-bg p-8">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-emerald-800 to-black p-8">
       <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Musical Mosaic Dashboard
+        <h1 className="text-4xl font-bold text-center mb-8 text-platinum">
+          Spotify Numbers Machine
         </h1>
         
         {streamingData.length === 0 ? (
