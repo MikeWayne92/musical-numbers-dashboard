@@ -3,8 +3,11 @@ import { useState, useMemo } from 'react';
 import { FileUpload } from '@/components/FileUpload';
 import StatCard from '@/components/StatCard';
 import TopTracksChart from '@/components/TopTracksChart';
+import TopArtistsChart from '@/components/TopArtistsChart';
 import ListeningTrendsChart from '@/components/ListeningTrendsChart';
 import SessionAnalysisChart from '@/components/SessionAnalysisChart';
+import ListeningHeatmapChart from '@/components/ListeningHeatmapChart';
+import GenreDistributionChart from '@/components/GenreDistributionChart';
 import { Clock, Music2, Calendar, Users } from 'lucide-react';
 
 interface StreamingData {
@@ -13,6 +16,10 @@ interface StreamingData {
   master_metadata_album_artist_name: string;
   master_metadata_album_name: string;
   ms_played: number;
+  // Additional fields that might be present
+  platform: string;
+  conn_country: string;
+  spotify_track_uri: string;
 }
 
 const Index = () => {
@@ -54,6 +61,19 @@ const Index = () => {
       .slice(0, 10)
       .map(([name, plays]) => ({ name, plays }));
 
+    // Calculate top artists
+    const artistPlays = streamingData.reduce((acc, curr) => {
+      const artist = curr.master_metadata_album_artist_name;
+      if (!artist) return acc;
+      acc[artist] = (acc[artist] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const topArtists = Object.entries(artistPlays)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 10)
+      .map(([name, plays]) => ({ name, plays }));
+
     // Calculate daily listening time
     const dailyListening = streamingData.reduce((acc, curr) => {
       const date = curr.ts.split(' ')[0];
@@ -80,14 +100,55 @@ const Index = () => {
       };
     });
 
+    // Calculate weekly heatmap data
+    const weeklyListeningMap = streamingData.reduce((acc, curr) => {
+      const date = new Date(curr.ts);
+      const dayOfWeek = date.getDay(); // 0-6, 0 is Sunday
+      const hour = date.getHours(); // 0-23
+      
+      const key = `${dayOfWeek}-${hour}`;
+      if (!acc[key]) {
+        acc[key] = 0;
+      }
+      acc[key] += curr.ms_played / (1000 * 60); // Convert to minutes
+      
+      return acc;
+    }, {} as Record<string, number>);
+
+    const heatmapData = Object.entries(weeklyListeningMap).map(([key, minutes]) => {
+      const [dayOfWeek, hour] = key.split('-').map(Number);
+      return {
+        dayOfWeek,
+        hour,
+        intensity: minutes, // Total minutes in this day/hour combination
+      };
+    });
+
+    // Mock genre distribution (in a real app, this would come from the Spotify API or user data)
+    const mockGenres = [
+      { name: 'Pop', size: 45 },
+      { name: 'Rock', size: 30 },
+      { name: 'Hip Hop', size: 25 },
+      { name: 'Electronic', size: 20 },
+      { name: 'Classical', size: 15 },
+      { name: 'Jazz', size: 10 },
+      { name: 'R&B', size: 8 },
+      { name: 'Country', size: 7 },
+      { name: 'Folk', size: 5 },
+      { name: 'Indie', size: 12 }
+    ];
+
     return {
       totalHours,
       uniqueTracks,
       uniqueArtists,
       uniqueDays,
       topTracks,
+      topArtists,
       dailyTrends,
-      sessions
+      sessions,
+      heatmapData,
+      genreData: mockGenres
     };
   }, [streamingData]);
 
@@ -134,8 +195,14 @@ const Index = () => {
               <SessionAnalysisChart data={stats?.sessions || []} />
             </div>
             
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <TopTracksChart data={stats?.topTracks || []} />
+              <TopArtistsChart data={stats?.topArtists || []} />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ListeningHeatmapChart data={stats?.heatmapData || []} />
+              <GenreDistributionChart data={stats?.genreData || []} />
             </div>
           </div>
         )}
