@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TreeMap, Tooltip, ResponsiveContainer } from 'recharts';
+import { Treemap, Tooltip, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface GenreData {
@@ -61,7 +61,7 @@ const GenreDistributionChart = ({ data }: GenreDistributionChartProps) => {
       <h3 className="text-xl font-semibold mb-5 text-emerald-400">Genre Distribution</h3>
       <ScrollArea className="h-[430px]">
         <ResponsiveContainer width="100%" height={400}>
-          <TreeMap
+          <Treemap
             data={data}
             dataKey="size"
             nameKey="name"
@@ -76,7 +76,7 @@ const GenreDistributionChart = ({ data }: GenreDistributionChartProps) => {
               }}
               formatter={(value: number) => [`${value} tracks`, "Tracks"]}
             />
-          </TreeMap>
+          </Treemap>
         </ResponsiveContainer>
       </ScrollArea>
     </div>
