@@ -20,7 +20,7 @@ const SessionAnalysisChart = ({ data }: SessionAnalysisChartProps) => {
   }, [data, minDuration]);
   
   return (
-    <div className="neo-button p-5 h-[400px] rounded-xl border">
+    <div className="neo-button p-4 md:p-5 h-[400px] rounded-xl border">
       <h3 className="text-xl font-semibold mb-1 chart-title">Listening Patterns</h3>
       <p className="chart-subtitle">When and how long you listen throughout the day</p>
       
@@ -42,23 +42,24 @@ const SessionAnalysisChart = ({ data }: SessionAnalysisChartProps) => {
       
       <ScrollArea className="h-[310px]">
         <ResponsiveContainer width="100%" height={310}>
-          <ScatterChart margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
+          <ScatterChart margin={{ top: 5, right: 20, left: 10, bottom: 25 }}>
             <XAxis 
               dataKey="hour" 
               name="Time" 
               stroke="rgb(var(--chart-text))"
               tickFormatter={(hour) => `${hour}:00`}
               domain={[0, 23]}
-              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 11 }}
-              tickMargin={10}
-              height={50}
+              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 10 }}
+              tickMargin={5}
+              height={40}
             />
             <YAxis 
               dataKey="duration" 
               name="Duration" 
               stroke="rgb(var(--chart-text))"
               tickFormatter={(minutes) => `${Math.floor(minutes / 60)}h`}
-              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 12 }}
+              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 10 }}
+              width={30}
             />
             <Tooltip 
               cursor={{ strokeDasharray: '3 3' }}

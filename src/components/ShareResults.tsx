@@ -1,17 +1,21 @@
 
 import React, { useState } from 'react';
-import { Download, Share2 } from 'lucide-react';
+import { Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useToast } from '@/components/ui/use-toast';
 
-const ShareResults = () => {
-  const [isSharing, setIsSharing] = useState(false);
+interface ShareResultsProps {
+  showShareOption?: boolean;
+}
+
+const ShareResults = ({ showShareOption = false }: ShareResultsProps) => {
+  const [isExporting, setIsExporting] = useState(false);
   const { toast } = useToast();
 
   const exportToPDF = async () => {
     try {
-      setIsSharing(true);
+      setIsExporting(true);
       toast({
         title: "Preparing your PDF...",
         description: "Please wait while we generate your listening report.",
@@ -57,38 +61,7 @@ const ShareResults = () => {
         variant: "destructive",
       });
     } finally {
-      setIsSharing(false);
-    }
-  };
-
-  const shareToSocial = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'My Spotify Listening Report',
-        text: 'Check out my Spotify listening stats!',
-        url: window.location.href,
-      })
-        .then(() => {
-          toast({
-            title: "Shared!",
-            description: "Your report has been shared successfully.",
-          });
-        })
-        .catch((error) => {
-          console.error('Error sharing:', error);
-          toast({
-            title: "Error",
-            description: "Failed to share. Please try again.",
-            variant: "destructive",
-          });
-        });
-    } else {
-      // Fallback for browsers that don't support navigator.share
-      toast({
-        title: "Share not supported",
-        description: "Your browser doesn't support direct sharing. Try copying the URL instead.",
-        variant: "destructive",
-      });
+      setIsExporting(false);
     }
   };
 
@@ -96,18 +69,11 @@ const ShareResults = () => {
     <div className="fixed bottom-4 right-4 flex space-x-2">
       <button
         onClick={exportToPDF}
-        disabled={isSharing}
-        className="p-3 rounded-full bg-emerald-700/80 text-white hover:bg-emerald-600 transition-colors"
+        disabled={isExporting}
+        className="p-3 rounded-full bg-emerald-700/80 text-white hover:bg-emerald-600 transition-colors neo-button"
         aria-label="Download as PDF"
       >
         <Download size={20} />
-      </button>
-      <button
-        onClick={shareToSocial}
-        className="p-3 rounded-full bg-emerald-700/80 text-white hover:bg-emerald-600 transition-colors"
-        aria-label="Share results"
-      >
-        <Share2 size={20} />
       </button>
     </div>
   );

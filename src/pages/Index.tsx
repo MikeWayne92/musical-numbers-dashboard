@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from 'react';
 import { FileUpload } from '@/components/FileUpload';
 import StatCard from '@/components/StatCard';
@@ -8,6 +9,7 @@ import SessionAnalysisChart from '@/components/SessionAnalysisChart';
 import ListeningHeatmapChart from '@/components/ListeningHeatmapChart';
 import GenreDistributionChart from '@/components/GenreDistributionChart';
 import MoodAnalyzer from '@/components/MoodAnalyzer';
+import ShareResults from '@/components/ShareResults';
 import { Clock, Music2, Calendar, Users } from 'lucide-react';
 
 interface StreamingData {
@@ -157,36 +159,36 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-emerald-800 to-black p-8">
-      <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
-        <h1 className="text-4xl font-bold text-center mb-8 text-platinum">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-emerald-800 to-black p-4 md:p-8">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8 animate-fade-in">
+        <h1 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 text-platinum">
           Spotify Numbers Machine
         </h1>
         
         {streamingData.length === 0 ? (
           <FileUpload onFileLoaded={handleFileLoaded} />
         ) : (
-          <div id="spotify-dashboard" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div id="spotify-dashboard" className="space-y-6 md:space-y-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
               <StatCard
                 title="Total Listening Time"
                 value={`${stats?.totalHours} hours`}
-                icon={<Clock className="h-6 w-6" />}
+                icon={<Clock className="h-5 w-5 md:h-6 md:w-6" />}
               />
               <StatCard
                 title="Unique Tracks"
                 value={stats?.uniqueTracks || 0}
-                icon={<Music2 className="h-6 w-6" />}
+                icon={<Music2 className="h-5 w-5 md:h-6 md:w-6" />}
               />
               <StatCard
                 title="Unique Artists"
                 value={stats?.uniqueArtists || 0}
-                icon={<Users className="h-6 w-6" />}
+                icon={<Users className="h-5 w-5 md:h-6 md:w-6" />}
               />
               <StatCard
                 title="Days Listened"
                 value={stats?.uniqueDays || 0}
-                icon={<Calendar className="h-6 w-6" />}
+                icon={<Calendar className="h-5 w-5 md:h-6 md:w-6" />}
               />
             </div>
             
@@ -208,6 +210,8 @@ const Index = () => {
             <div className="grid grid-cols-1 gap-6">
               <MoodAnalyzer data={streamingData} />
             </div>
+            
+            {streamingData.length > 0 && <ShareResults showShareOption={false} />}
           </div>
         )}
       </div>

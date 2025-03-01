@@ -17,7 +17,7 @@ const TopTracksChart = ({ data }: TopTracksChartProps) => {
   const filteredData = data.slice(0, filterCount);
 
   return (
-    <div className="neo-button p-5 h-[500px] rounded-xl border">
+    <div className="neo-button p-4 md:p-5 h-[500px] rounded-xl border">
       <h3 className="text-xl font-semibold mb-1 chart-title">Top Tracks</h3>
       <p className="chart-subtitle">Your most played songs based on frequency</p>
       
@@ -38,7 +38,7 @@ const TopTracksChart = ({ data }: TopTracksChartProps) => {
       
       <ScrollArea className="h-[400px]">
         <ResponsiveContainer width="100%" height={filteredData.length * 50} minHeight={400}>
-          <BarChart data={filteredData} layout="vertical" margin={{ top: 5, right: 30, left: 130, bottom: 5 }}>
+          <BarChart data={filteredData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <XAxis 
               type="number" 
               stroke="rgb(var(--chart-text))" 
@@ -47,9 +47,9 @@ const TopTracksChart = ({ data }: TopTracksChartProps) => {
             <YAxis 
               type="category" 
               dataKey="name" 
-              width={120}
+              width={100}
               tick={{ fill: 'rgb(var(--chart-text))', fontSize: 12 }}
-              tickMargin={10}
+              tickMargin={5}
               interval={0}
             />
             <Tooltip 

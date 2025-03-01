@@ -26,7 +26,7 @@ const ListeningTrendsChart = ({ data }: ListeningTrendsChartProps) => {
   });
 
   return (
-    <div className="neo-button p-5 h-[400px] rounded-xl border">
+    <div className="neo-button p-4 md:p-5 h-[400px] rounded-xl border">
       <h3 className="text-xl font-semibold mb-1 chart-title">Listening Trends</h3>
       <p className="chart-subtitle">Your daily listening habits over time</p>
       
@@ -47,7 +47,7 @@ const ListeningTrendsChart = ({ data }: ListeningTrendsChartProps) => {
       
       <ScrollArea className="h-[310px]">
         <ResponsiveContainer width="100%" height={310} minWidth={filteredData.length * 5}>
-          <AreaChart data={filteredData} margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
+          <AreaChart data={filteredData} margin={{ top: 5, right: 20, left: 10, bottom: 25 }}>
             <defs>
               <linearGradient id="listenGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="rgb(var(--chart-accent))" stopOpacity={0.8} />
@@ -58,7 +58,7 @@ const ListeningTrendsChart = ({ data }: ListeningTrendsChartProps) => {
               dataKey="date" 
               stroke="rgb(var(--chart-text))"
               tickFormatter={(date) => format(new Date(date), 'MMM d')}
-              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 11 }}
+              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 10 }}
               tickMargin={10}
               height={50}
               interval="preserveStartEnd"
@@ -66,7 +66,8 @@ const ListeningTrendsChart = ({ data }: ListeningTrendsChartProps) => {
             <YAxis 
               stroke="rgb(var(--chart-text))"
               tickFormatter={(minutes) => `${Math.floor(minutes / 60)}h`}
-              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 12 }}
+              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 10 }}
+              width={30}
             />
             <Tooltip
               contentStyle={{

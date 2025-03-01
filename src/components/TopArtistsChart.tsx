@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface TopArtist {
@@ -42,7 +42,7 @@ const TopArtistsChart = ({ data }: TopArtistsChartProps) => {
   const filteredData = data.slice(0, filterCount);
 
   return (
-    <div className="neo-button p-5 h-[500px] rounded-xl border">
+    <div className="neo-button p-4 md:p-5 h-[500px] rounded-xl border">
       <h3 className="text-xl font-semibold mb-1 chart-title">Top Artists</h3>
       <p className="chart-subtitle">Artists you've listened to the most</p>
       
@@ -85,16 +85,6 @@ const TopArtistsChart = ({ data }: TopArtistsChartProps) => {
                 border: '1px solid rgb(var(--chart-accent))',
                 borderRadius: '8px',
                 color: 'rgb(var(--chart-text))'
-              }}
-            />
-            <Legend 
-              layout="vertical" 
-              verticalAlign="middle" 
-              align="right"
-              wrapperStyle={{
-                paddingLeft: "10px",
-                fontSize: "12px",
-                color: "rgb(var(--chart-text))"
               }}
             />
           </PieChart>

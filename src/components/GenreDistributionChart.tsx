@@ -61,7 +61,7 @@ const GenreDistributionChart = ({ data }: GenreDistributionChartProps) => {
   const filteredData = data.filter(item => item.size >= minSize);
 
   return (
-    <div className="neo-button p-5 h-[500px] rounded-xl border">
+    <div className="neo-button p-4 md:p-5 h-[500px] rounded-xl border">
       <h3 className="text-xl font-semibold mb-1 chart-title">Genre Distribution</h3>
       <p className="chart-subtitle">The musical genres you listen to most</p>
       
@@ -82,24 +82,26 @@ const GenreDistributionChart = ({ data }: GenreDistributionChartProps) => {
       </div>
       
       <ScrollArea className="h-[380px]">
-        <ResponsiveContainer width="100%" height={400} className="pb-5">
-          <Treemap
-            data={filteredData}
-            dataKey="size"
-            nameKey="name"
-            content={<CustomContent />}
-          >
-            <Tooltip
-              contentStyle={{
-                backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                border: '1px solid rgb(5, 150, 105)',
-                borderRadius: '8px',
-                color: 'rgb(229, 229, 229)'
-              }}
-              formatter={(value: number) => [`${value.toFixed(0)} tracks`, "Tracks"]}
-            />
-          </Treemap>
-        </ResponsiveContainer>
+        <div className="pb-5">
+          <ResponsiveContainer width="100%" height={400}>
+            <Treemap
+              data={filteredData}
+              dataKey="size"
+              nameKey="name"
+              content={<CustomContent />}
+            >
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                  border: '1px solid rgb(5, 150, 105)',
+                  borderRadius: '8px',
+                  color: 'rgb(229, 229, 229)'
+                }}
+                formatter={(value: number) => [`${value.toFixed(0)} tracks`, "Tracks"]}
+              />
+            </Treemap>
+          </ResponsiveContainer>
+        </div>
       </ScrollArea>
     </div>
   );
