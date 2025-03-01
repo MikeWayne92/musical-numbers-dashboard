@@ -31,6 +31,9 @@
     --chart-text: 229 229 229;
     --chart-accent: 16 185 129;
     --chart-border: 5 150 105;
+    
+    --neo-shadow-dark: rgba(10, 30, 15, 0.3);
+    --neo-shadow-light: rgba(255, 255, 255, 0.8);
   }
 
   .dark-theme {
@@ -39,23 +42,26 @@
     --chart-text: 229 229 229;
     --chart-accent: 52 211 153;
     --chart-border: 5 100 75;
+    
+    --neo-shadow-dark: rgba(0, 0, 0, 0.5);
+    --neo-shadow-light: rgba(20, 70, 50, 0.2);
   }
 }
 
 @layer components {
   .neo-shadow {
-    box-shadow: 6px 6px 12px theme('colors.neo.shadow.dark'),
-                -6px -6px 12px theme('colors.neo.shadow.light');
+    box-shadow: 6px 6px 12px var(--neo-shadow-dark),
+                -6px -6px 12px var(--neo-shadow-light);
   }
   
   .neo-shadow-inner {
-    box-shadow: inset 6px 6px 12px theme('colors.neo.shadow.dark'),
-                inset -6px -6px 12px theme('colors.neo.shadow.light');
+    box-shadow: inset 6px 6px 12px var(--neo-shadow-dark),
+                inset -6px -6px 12px var(--neo-shadow-light);
   }
 
   .neo-button {
     @apply rounded-xl transition-all duration-200 ease-out
-           active:scale-95;
+           active:scale-95 neo-shadow;
     background: linear-gradient(to bottom right, rgba(var(--chart-bg-from), 0.9), rgba(var(--chart-bg-to), 0.9));
     color: rgb(var(--chart-text));
     border: 1px solid rgba(var(--chart-border), 0.3);
@@ -63,5 +69,13 @@
 
   .chart-title {
     color: rgb(var(--chart-accent));
+  }
+  
+  .chart-subtitle {
+    color: rgb(var(--chart-text));
+    opacity: 0.8;
+    font-size: 0.875rem;
+    margin-top: -0.25rem;
+    margin-bottom: 1rem;
   }
 }

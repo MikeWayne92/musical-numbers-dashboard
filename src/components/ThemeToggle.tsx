@@ -15,8 +15,10 @@ const ThemeToggle = () => {
   }, []);
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    if (!isDark) {
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+    
+    if (newIsDark) {
       document.documentElement.classList.add('dark-theme');
       localStorage.setItem('spotify-theme', 'dark');
     } else {
@@ -28,7 +30,7 @@ const ThemeToggle = () => {
   return (
     <button 
       onClick={toggleTheme}
-      className="fixed top-4 right-4 p-2 rounded-full bg-emerald-700/80 text-white hover:bg-emerald-600 transition-colors"
+      className="fixed top-4 right-4 p-2 rounded-full bg-emerald-700 text-white hover:bg-emerald-600 transition-colors neo-button"
       aria-label="Toggle theme"
     >
       {isDark ? <Sun size={20} /> : <Moon size={20} />}

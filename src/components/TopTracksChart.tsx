@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -13,16 +13,36 @@ interface TopTracksChartProps {
 }
 
 const TopTracksChart = ({ data }: TopTracksChartProps) => {
+  const [filterCount, setFilterCount] = useState<number>(10);
+  const filteredData = data.slice(0, filterCount);
+
   return (
     <div className="neo-button p-5 h-[500px] rounded-xl border">
-      <h3 className="text-xl font-semibold mb-5 chart-title">Top Tracks</h3>
-      <ScrollArea className="h-[430px]">
-        <ResponsiveContainer width="100%" height={data.length * 50} minHeight={400}>
-          <BarChart data={data} layout="vertical" margin={{ top: 5, right: 30, left: 130, bottom: 5 }}>
+      <h3 className="text-xl font-semibold mb-1 chart-title">Top Tracks</h3>
+      <p className="chart-subtitle">Your most played songs based on frequency</p>
+      
+      <div className="mb-4 flex items-center">
+        <label htmlFor="trackCount" className="text-sm mr-3 text-platinum">Show top:</label>
+        <select 
+          id="trackCount" 
+          className="bg-emerald-800/40 border border-emerald-700/30 text-platinum rounded p-1 text-sm"
+          value={filterCount}
+          onChange={(e) => setFilterCount(Number(e.target.value))}
+        >
+          <option value="5">5 tracks</option>
+          <option value="10">10 tracks</option>
+          <option value="15">15 tracks</option>
+          <option value="20">20 tracks</option>
+        </select>
+      </div>
+      
+      <ScrollArea className="h-[400px]">
+        <ResponsiveContainer width="100%" height={filteredData.length * 50} minHeight={400}>
+          <BarChart data={filteredData} layout="vertical" margin={{ top: 5, right: 30, left: 130, bottom: 5 }}>
             <XAxis 
               type="number" 
               stroke="rgb(var(--chart-text))" 
-              tickFormatter={(value) => value.toString()}
+              tickFormatter={(value) => value.toFixed(0)}
             />
             <YAxis 
               type="category" 
@@ -39,7 +59,7 @@ const TopTracksChart = ({ data }: TopTracksChartProps) => {
                 borderRadius: '8px',
                 color: 'rgb(var(--chart-text))'
               }}
-              formatter={(value: number) => [`${value} plays`, "Plays"]}
+              formatter={(value: number) => [`${value.toFixed(0)} plays`, "Plays"]}
             />
             <Bar 
               dataKey="plays" 

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -38,14 +38,33 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 const TopArtistsChart = ({ data }: TopArtistsChartProps) => {
+  const [filterCount, setFilterCount] = useState<number>(10);
+  const filteredData = data.slice(0, filterCount);
+
   return (
-    <div className="neo-button p-5 h-[500px] bg-gradient-to-br from-emerald-800/90 to-black/90 text-platinum rounded-xl border border-emerald-700/30">
-      <h3 className="text-xl font-semibold mb-5 text-emerald-400">Top Artists</h3>
-      <ScrollArea className="h-[430px]">
+    <div className="neo-button p-5 h-[500px] rounded-xl border">
+      <h3 className="text-xl font-semibold mb-1 chart-title">Top Artists</h3>
+      <p className="chart-subtitle">Artists you've listened to the most</p>
+      
+      <div className="mb-4 flex items-center">
+        <label htmlFor="artistCount" className="text-sm mr-3 text-platinum">Show top:</label>
+        <select 
+          id="artistCount" 
+          className="bg-emerald-800/40 border border-emerald-700/30 text-platinum rounded p-1 text-sm"
+          value={filterCount}
+          onChange={(e) => setFilterCount(Number(e.target.value))}
+        >
+          <option value="5">5 artists</option>
+          <option value="10">10 artists</option>
+          <option value="15">15 artists</option>
+        </select>
+      </div>
+      
+      <ScrollArea className="h-[400px]">
         <ResponsiveContainer width="100%" height={400}>
           <PieChart>
             <Pie
-              data={data}
+              data={filteredData}
               cx="50%"
               cy="50%"
               labelLine={false}
@@ -55,17 +74,17 @@ const TopArtistsChart = ({ data }: TopArtistsChartProps) => {
               dataKey="plays"
               nameKey="name"
             >
-              {data.map((entry, index) => (
+              {filteredData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
             <Tooltip
-              formatter={(value: number) => [`${value} plays`, "Plays"]}
+              formatter={(value: number) => [`${value.toFixed(0)} plays`, "Plays"]}
               contentStyle={{
-                backgroundColor: '#0F4C3A',
-                border: '1px solid #10B981',
+                backgroundColor: 'rgba(var(--chart-bg-from), 0.8)',
+                border: '1px solid rgb(var(--chart-accent))',
                 borderRadius: '8px',
-                color: '#E5E5E5'
+                color: 'rgb(var(--chart-text))'
               }}
             />
             <Legend 
@@ -75,7 +94,7 @@ const TopArtistsChart = ({ data }: TopArtistsChartProps) => {
               wrapperStyle={{
                 paddingLeft: "10px",
                 fontSize: "12px",
-                color: "#E5E5E5"
+                color: "rgb(var(--chart-text))"
               }}
             />
           </PieChart>

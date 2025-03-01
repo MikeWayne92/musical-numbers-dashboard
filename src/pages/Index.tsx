@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from 'react';
 import { FileUpload } from '@/components/FileUpload';
 import StatCard from '@/components/StatCard';
@@ -10,7 +9,6 @@ import ListeningHeatmapChart from '@/components/ListeningHeatmapChart';
 import GenreDistributionChart from '@/components/GenreDistributionChart';
 import MoodAnalyzer from '@/components/MoodAnalyzer';
 import ThemeToggle from '@/components/ThemeToggle';
-import ShareResults from '@/components/ShareResults';
 import { Clock, Music2, Calendar, Users } from 'lucide-react';
 
 interface StreamingData {
@@ -213,8 +211,6 @@ const Index = () => {
             <div className="grid grid-cols-1 gap-6">
               <MoodAnalyzer data={streamingData} />
             </div>
-            
-            <ShareResults />
           </div>
         )}
       </div>

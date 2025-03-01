@@ -1,7 +1,6 @@
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { format } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface ListeningSession {
@@ -14,36 +13,60 @@ interface SessionAnalysisChartProps {
 }
 
 const SessionAnalysisChart = ({ data }: SessionAnalysisChartProps) => {
+  const [minDuration, setMinDuration] = useState<number>(0);
+  
+  const filteredData = useMemo(() => {
+    return data.filter(session => session.duration >= minDuration);
+  }, [data, minDuration]);
+  
   return (
-    <div className="neo-button p-5 h-[400px] bg-gradient-to-br from-emerald-800/90 to-black/90 text-platinum rounded-xl border border-emerald-700/30">
-      <h3 className="text-xl font-semibold mb-5 text-emerald-400">Listening Patterns</h3>
-      <ScrollArea className="h-[330px]">
-        <ResponsiveContainer width="100%" height={350}>
+    <div className="neo-button p-5 h-[400px] rounded-xl border">
+      <h3 className="text-xl font-semibold mb-1 chart-title">Listening Patterns</h3>
+      <p className="chart-subtitle">When and how long you listen throughout the day</p>
+      
+      <div className="mb-4 flex items-center">
+        <label htmlFor="minDuration" className="text-sm mr-3 text-platinum">Min. duration:</label>
+        <select 
+          id="minDuration" 
+          className="bg-emerald-800/40 border border-emerald-700/30 text-platinum rounded p-1 text-sm"
+          value={minDuration}
+          onChange={(e) => setMinDuration(Number(e.target.value))}
+        >
+          <option value="0">All sessions</option>
+          <option value="5">5+ minutes</option>
+          <option value="15">15+ minutes</option>
+          <option value="30">30+ minutes</option>
+          <option value="60">1+ hour</option>
+        </select>
+      </div>
+      
+      <ScrollArea className="h-[310px]">
+        <ResponsiveContainer width="100%" height={310}>
           <ScatterChart margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
             <XAxis 
               dataKey="hour" 
               name="Time" 
-              stroke="#E5E5E5"
+              stroke="rgb(var(--chart-text))"
               tickFormatter={(hour) => `${hour}:00`}
               domain={[0, 23]}
-              tick={{ fill: '#E5E5E5', fontSize: 11 }}
+              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 11 }}
               tickMargin={10}
               height={50}
             />
             <YAxis 
               dataKey="duration" 
               name="Duration" 
-              stroke="#E5E5E5"
+              stroke="rgb(var(--chart-text))"
               tickFormatter={(minutes) => `${Math.floor(minutes / 60)}h`}
-              tick={{ fill: '#E5E5E5', fontSize: 12 }}
+              tick={{ fill: 'rgb(var(--chart-text))', fontSize: 12 }}
             />
             <Tooltip 
               cursor={{ strokeDasharray: '3 3' }}
               contentStyle={{
-                backgroundColor: '#0F4C3A',
-                border: '1px solid #10B981',
+                backgroundColor: 'rgba(var(--chart-bg-from), 0.8)',
+                border: '1px solid rgb(var(--chart-accent))',
                 borderRadius: '8px',
-                color: '#E5E5E5'
+                color: 'rgb(var(--chart-text))'
               }}
               formatter={(value: number, name: string) => {
                 if (name === 'Time') return `${value}:00`;
@@ -52,12 +75,12 @@ const SessionAnalysisChart = ({ data }: SessionAnalysisChartProps) => {
                   const mins = Math.round(value % 60);
                   return [`${hours}h ${mins}m`, 'Duration'];
                 }
-                return [value.toFixed(3), name];
+                return [value.toFixed(0), name];
               }}
             />
             <Scatter 
-              data={data} 
-              fill="#10B981"
+              data={filteredData} 
+              fill="rgb(var(--chart-accent))"
               fillOpacity={0.7}
               shape="circle"
               r={4}
