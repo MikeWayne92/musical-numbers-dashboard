@@ -34,7 +34,7 @@ const SessionAnalysisChart = ({ data }: SessionAnalysisChartProps) => {
               dataKey="duration" 
               name="Duration" 
               stroke="#E5E5E5"
-              tickFormatter={(minutes) => `${Math.round(minutes / 60)}h`}
+              tickFormatter={(minutes) => `${Math.floor(minutes / 60)}h`}
               tick={{ fill: '#E5E5E5', fontSize: 12 }}
             />
             <Tooltip 
@@ -47,7 +47,12 @@ const SessionAnalysisChart = ({ data }: SessionAnalysisChartProps) => {
               }}
               formatter={(value: number, name: string) => {
                 if (name === 'Time') return `${value}:00`;
-                return [`${Math.round(value / 60)}h ${value % 60}m`, 'Duration'];
+                if (name === 'Duration') {
+                  const hours = Math.floor(value / 60);
+                  const mins = Math.round(value % 60);
+                  return [`${hours}h ${mins}m`, 'Duration'];
+                }
+                return [value.toFixed(3), name];
               }}
             />
             <Scatter 

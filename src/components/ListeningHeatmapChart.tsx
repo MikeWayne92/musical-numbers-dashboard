@@ -75,7 +75,7 @@ const ListeningHeatmapChart = ({ data }: ListeningHeatmapChartProps) => {
               formatter={(value: any, name: string) => {
                 if (name === 'Hour') return `${value}:00`;
                 if (name === 'Day') return DAYS[value];
-                if (name === 'Intensity') return [`${value} minutes`, 'Listening Time'];
+                if (name === 'Intensity') return [`${value.toFixed(1)} minutes`, 'Listening Time'];
                 return [value, name];
               }}
             />

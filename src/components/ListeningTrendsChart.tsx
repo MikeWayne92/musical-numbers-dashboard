@@ -37,7 +37,7 @@ const ListeningTrendsChart = ({ data }: ListeningTrendsChartProps) => {
             />
             <YAxis 
               stroke="#E5E5E5"
-              tickFormatter={(minutes) => `${Math.round(minutes / 60)}h`}
+              tickFormatter={(minutes) => `${Math.floor(minutes / 60)}h`}
               tick={{ fill: '#E5E5E5', fontSize: 12 }}
             />
             <Tooltip
@@ -48,7 +48,11 @@ const ListeningTrendsChart = ({ data }: ListeningTrendsChartProps) => {
                 color: '#E5E5E5'
               }}
               labelFormatter={(date) => format(new Date(date), 'MMM d, yyyy')}
-              formatter={(value: number) => [`${Math.round(value / 60)}h ${value % 60}m`, 'Listening Time']}
+              formatter={(value: number) => {
+                const hours = Math.floor(value / 60);
+                const mins = Math.round(value % 60);
+                return [`${hours}h ${mins}m`, 'Listening Time'];
+              }}
             />
             <Area 
               type="monotone" 

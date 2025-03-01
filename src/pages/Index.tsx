@@ -8,6 +8,9 @@ import ListeningTrendsChart from '@/components/ListeningTrendsChart';
 import SessionAnalysisChart from '@/components/SessionAnalysisChart';
 import ListeningHeatmapChart from '@/components/ListeningHeatmapChart';
 import GenreDistributionChart from '@/components/GenreDistributionChart';
+import MoodAnalyzer from '@/components/MoodAnalyzer';
+import ThemeToggle from '@/components/ThemeToggle';
+import ShareResults from '@/components/ShareResults';
 import { Clock, Music2, Calendar, Users } from 'lucide-react';
 
 interface StreamingData {
@@ -158,6 +161,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-emerald-800 to-black p-8">
+      <ThemeToggle />
+      
       <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
         <h1 className="text-4xl font-bold text-center mb-8 text-platinum">
           Spotify Numbers Machine
@@ -166,7 +171,7 @@ const Index = () => {
         {streamingData.length === 0 ? (
           <FileUpload onFileLoaded={handleFileLoaded} />
         ) : (
-          <div className="space-y-8">
+          <div id="spotify-dashboard" className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <StatCard
                 title="Total Listening Time"
@@ -204,6 +209,12 @@ const Index = () => {
               <ListeningHeatmapChart data={stats?.heatmapData || []} />
               <GenreDistributionChart data={stats?.genreData || []} />
             </div>
+
+            <div className="grid grid-cols-1 gap-6">
+              <MoodAnalyzer data={streamingData} />
+            </div>
+            
+            <ShareResults />
           </div>
         )}
       </div>

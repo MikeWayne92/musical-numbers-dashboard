@@ -74,7 +74,7 @@ const GenreDistributionChart = ({ data }: GenreDistributionChartProps) => {
                 borderRadius: '8px',
                 color: '#E5E5E5'
               }}
-              formatter={(value: number) => [`${value} tracks`, "Tracks"]}
+              formatter={(value: number) => [`${value.toFixed(0)} tracks`, "Tracks"]}
             />
           </Treemap>
         </ResponsiveContainer>

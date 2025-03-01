@@ -25,6 +25,20 @@
     --ring: 220 90% 60%;
     
     --radius: 0.75rem;
+
+    --chart-bg-from: 16 185 129;
+    --chart-bg-to: 0 0 0;
+    --chart-text: 229 229 229;
+    --chart-accent: 16 185 129;
+    --chart-border: 5 150 105;
+  }
+
+  .dark-theme {
+    --chart-bg-from: 5 55 40;
+    --chart-bg-to: 0 0 0;
+    --chart-text: 229 229 229;
+    --chart-accent: 52 211 153;
+    --chart-border: 5 100 75;
   }
 }
 
@@ -40,8 +54,14 @@
   }
 
   .neo-button {
-    @apply bg-neo-bg rounded-xl neo-shadow
-           transition-all duration-200 ease-out
-           active:neo-shadow-inner active:scale-95;
+    @apply rounded-xl transition-all duration-200 ease-out
+           active:scale-95;
+    background: linear-gradient(to bottom right, rgba(var(--chart-bg-from), 0.9), rgba(var(--chart-bg-to), 0.9));
+    color: rgb(var(--chart-text));
+    border: 1px solid rgba(var(--chart-border), 0.3);
+  }
+
+  .chart-title {
+    color: rgb(var(--chart-accent));
   }
 }
