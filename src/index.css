@@ -35,17 +35,6 @@
     --neo-shadow-dark: rgba(10, 30, 15, 0.3);
     --neo-shadow-light: rgba(255, 255, 255, 0.8);
   }
-
-  .dark-theme {
-    --chart-bg-from: 5 55 40;
-    --chart-bg-to: 0 0 0;
-    --chart-text: 229 229 229;
-    --chart-accent: 52 211 153;
-    --chart-border: 5 100 75;
-    
-    --neo-shadow-dark: rgba(0, 0, 0, 0.5);
-    --neo-shadow-light: rgba(20, 70, 50, 0.2);
-  }
 }
 
 @layer components {

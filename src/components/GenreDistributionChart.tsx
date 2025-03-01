@@ -81,8 +81,8 @@ const GenreDistributionChart = ({ data }: GenreDistributionChartProps) => {
         </select>
       </div>
       
-      <ScrollArea className="h-[400px]">
-        <ResponsiveContainer width="100%" height={400}>
+      <ScrollArea className="h-[380px]">
+        <ResponsiveContainer width="100%" height={400} className="pb-5">
           <Treemap
             data={filteredData}
             dataKey="size"
@@ -91,10 +91,10 @@ const GenreDistributionChart = ({ data }: GenreDistributionChartProps) => {
           >
             <Tooltip
               contentStyle={{
-                backgroundColor: 'rgba(var(--chart-bg-from), 0.8)',
-                border: '1px solid rgb(var(--chart-accent))',
+                backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                border: '1px solid rgb(5, 150, 105)',
                 borderRadius: '8px',
-                color: 'rgb(var(--chart-text))'
+                color: 'rgb(229, 229, 229)'
               }}
               formatter={(value: number) => [`${value.toFixed(0)} tracks`, "Tracks"]}
             />
